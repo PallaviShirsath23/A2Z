@@ -213,7 +213,21 @@ int main(){
     cout<<"Enter third number: ";
     cin>>c;
 
-    
+    if (a>b){
+        if(a>c){
+            cout<<a<<" is largest.";
+        }
+
+        else{
+            cout<<c<<" is largest.";
+        }
+    }
+
+    else{
+        if(b>c){
+            cpo 
+        }
+    }
 
 
 }
