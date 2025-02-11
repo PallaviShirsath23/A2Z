@@ -201,33 +201,85 @@ using namespace std;
 
 //nested if else
 
-int main(){
+// int main(){
     
-    int a,b,c;
-    cout<<"Enter first number: ";
-    cin>>a;
+//     int a,b,c;
+//     cout<<"Enter first number: ";
+//     cin>>a;
 
-    cout<<"Enter second number: ";
+//     cout<<"Enter second number: ";
+//     cin>>b;
+
+//     cout<<"Enter third number: ";
+//     cin>>c;
+
+//     if (a>b){
+//         if(a>c){
+//             cout<<a<<" is largest.";
+//         }
+
+//         else{
+//             cout<<c<<" is largest.";
+//         }
+//     }
+
+//     else{
+//         if(b>c){
+//             cout<<b<<" is greatest."
+//         }
+
+//         else{
+//             cout<<c<<"is greatest.";
+//         }
+//     }
+// }
+
+// 
+
+// int main(){
+
+//     int n;
+//     cout<<"Enter marks: ";
+//     cin>>n;
+
+//     if(n >= 81 && n<= 100){
+//         cout<<"Very Good";
+//     }
+
+//     else if(n >= 61 && n<= 80){
+//         cout<<"Good";
+//     }
+
+//     else if(n >= 41 && n<= 60){
+//         cout<<"Average";
+//     }
+
+//     else{
+//         cout<<"Fail";
+//     }
+// }
+
+// int main(){
+
+//     int n;
+//     cout<<"Enter a number: ";
+//     cin>>n;
+
+//     //(condition)? if true : if false ;
+//     (n%2 == 0)? cout<<"even" : cout<<"odd" ;
+
+// }
+
+int main(){
+
+    int n;
+    cout<<"Enter a first number: ";
+    cin>>n;
+
+    int b;
+    cout<<"Enter a second number: ";
     cin>>b;
 
-    cout<<"Enter third number: ";
-    cin>>c;
-
-    if (a>b){
-        if(a>c){
-            cout<<a<<" is largest.";
-        }
-
-        else{
-            cout<<c<<" is largest.";
-        }
-    }
-
-    else{
-        if(b>c){
-            cpo 
-        }
-    }
-
+    
 
 }
