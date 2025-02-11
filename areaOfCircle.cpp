@@ -36,15 +36,29 @@ using namespace std;
 
 //volume of a sphere
 
-int main(){
+// int main(){
     
-    float r;
-    cout<<"Enter the radius of a circle: ";
-    cin>>r;
+//     float r;
+//     cout<<"Enter the radius of a circle: ";
+//     cin>>r;
 
-    float pi = 3.14;
+//     float pi = 3.14;
 
-    float volume = (4/3)*(pi*r*r*r);
-    cout<<"The volume of the circle is: "<<volume;
+//     float volume = (4/3)*(pi*r*r*r);
+//     cout<<"The volume of the circle is: "<<volume;
+
+// }
+
+int main(){
+    int x;
+    cout<<"Enter the first number:";
+    cin>>x;
+
+    int y;
+    cout<<"Enter the second number:";
+    cin>>y;
+
+    int sum;
+    cout<<"The sum of two numbers is:"<<x+y;
 
 }
