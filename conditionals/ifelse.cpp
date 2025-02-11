@@ -90,16 +90,107 @@ using namespace std;
 //     }
 // }
 
+// int main(){
+//     int n;
+//     cout<<"Enter a number: ";
+//     cin>>n;
+
+//     if (n>99 && n<=999){
+//         cout<<"It is a 3 digit number.";
+//     }
+
+//     else{
+//         cout<<"It is not a three digit number";
+//     }
+// }
+
+// int main(){
+//     int n;
+//     cout<<"Enter a number: ";
+//     cin>>n;
+    
+//     if (n%3 == 0 && n%5 == 0){
+//         cout<<"It is divisible by both 3 and 5.";
+//     }
+    
+//     else if(n%5 == 0){
+//         cout<<"It is divisible only by 5.";
+//     } 
+
+//     else if(n%3 == 0){
+//         cout<<"It is divisible only by 3.";
+//     }
+
+//     else{
+//         cout<<"It is not divisible by both 3 and 5.";
+//     }
+// }
+
+// 
+
+// int main(){
+//     int a;
+//     cout<<"Enter a side A: ";
+//     cin>>a;
+
+//     int b;
+//     cout<<"Enter a side B: ";
+//     cin>>b;
+
+//     int c;
+//     cout<<"Enter a side C: ";
+//     cin>>c;
+
+//     if((a+b)>c && (b+c)>a && (c+a)>b ){
+//         cout<<"Valid Triangle";
+//     }
+    
+//     else{ 
+//         cout<<"Not Accepted";
+//     } 
+// }
+
+// int main(){
+//     int a,b,c;
+//     cout<<"Enter first number: ";
+//     cin>>a;
+
+//     cout<<"Enter second number: ";
+//     cin>>b;
+
+//     cout<<"Enter third number: ";
+//     cin>>c;
+
+//     if(a>c && a>b ){
+//         cout<<a<<" is greatest";
+//     }
+    
+//     else if(b>a && b>c){
+//         cout<<b<<" is greatest";
+//     }
+//     else{ 
+//         cout<<c<<" is greatest";
+//     } 
+// }
+
 int main(){
-    int n;
+    int a;
     cout<<"Enter a number: ";
-    cin>>n;
+    cin>>a;
 
-    if (n>99 && n<=999){
-        cout<<"It is a 3 digit number.";
+    if(a%3 == 0 || a%5 == 0 && a%15 != 0 ){
+        cout<<"yay ";
     }
 
-    else{
-        cout<<"It is not a three digit number";
+    elif(a%5 == 0){
+        cout<<"Divisible only by 5";
     }
+
+    elif(a%3 == 0){
+        cout<<"Divisible only by 3";
+    }
+
+    else{ 
+        cout<<"Not Divisible by either of the numbers.";
+    } 
 }
