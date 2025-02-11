@@ -7,7 +7,7 @@ using namespace std;
 //     char x = 'a';
 //     cout<<x; 
 // } 
-nint main(){
+int main(){
     
     char x = 'a';
     cout<<(int)x; //char to int
