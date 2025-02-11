@@ -173,24 +173,47 @@ using namespace std;
 //     } 
 // }
 
+// int main(){
+//     int a;
+//     cout<<"Enter a number: ";
+//     cin>>a;
+
+//     if((a%3 == 0 || a%5 == 0) && a%15 == 0 ){
+//         cout<<"yay, satisfies condition.";
+//     }
+
+//     if(a%5 == 0){
+//         cout<<"Divisible only by 5";
+//     }
+
+//     else if(a%3 == 0){
+//         cout<<"Divisible only by 3";
+//     }
+
+//     else if(a%15 == 0){9
+//         cout<<"Divisible only by 15";
+//     }
+
+//     else{ 
+//         cout<<"Not Divisible by either of the numbers.";
+//     } 
+// }
+
+//nested if else
+
 int main(){
-    int a;
-    cout<<"Enter a number: ";
+    
+    int a,b,c;
+    cout<<"Enter first number: ";
     cin>>a;
 
-    if(a%3 == 0 || a%5 == 0 && a%15 != 0 ){
-        cout<<"yay ";
-    }
+    cout<<"Enter second number: ";
+    cin>>b;
 
-    elif(a%5 == 0){
-        cout<<"Divisible only by 5";
-    }
+    cout<<"Enter third number: ";
+    cin>>c;
 
-    elif(a%3 == 0){
-        cout<<"Divisible only by 3";
-    }
+    
 
-    else{ 
-        cout<<"Not Divisible by either of the numbers.";
-    } 
+
 }
