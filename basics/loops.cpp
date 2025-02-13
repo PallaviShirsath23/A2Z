@@ -116,3 +116,69 @@ using namespace std;
 
 //GP
 
+// int main(){
+
+//     int n;
+//     cout<<"Enter number of terms to be printed: ";
+//     cin>>n;
+
+//     int a = 1;
+
+//     //using extra variable
+//     for(int i =1; i<= n ;i++){
+//         //ap = a*(n-1)*d;
+//         cout<<a<<" ";
+//         a*=2;
+//     }
+// }
+
+//print the highest factorof n(other than n)
+
+// int main(){
+
+//     int n;
+//     cout<<"Enter number of which you want tp find the factors: ";
+//     cin>>n;
+
+//     int f = 1;
+
+//     for(int i =1; i< n; i++){
+//         if(n%i == 0){
+//             f = i;
+//         }
+        
+//     }
+//     cout<<f;
+// }
+
+//another method
+
+// int main(){
+
+//     int n;
+//     cout<<"Enter number of which you want tp find the factors: ";
+//     cin>>n;
+
+//     int f = 1;
+
+//     for(int i =n/2; i>=1; i--){
+//         if(n%i == 0){
+//             cout<<i;
+//             break;
+//         }
+        
+//     }
+//     cout<<f;
+// }
+
+//composite number
+
+int main(){
+    int n;
+    cout<<"Enter  a number you want to find where composite or not: ";
+    cin>>n;
+
+    for(i=1 ; i=n/2 ;i++){
+        
+    }
+}
