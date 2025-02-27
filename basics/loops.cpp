@@ -173,34 +173,91 @@ using namespace std;
 
 //composite number
 
-int main(){
-    int n;
-    cout<<"Enter  a number you want to find where composite or not: ";
-    cin>>n;
+// int main(){
+//     int n;
+//     cout<<"Enter  a number you want to find where composite or not: ";
+//     cin>>n;
 
-    bool flag = true; //prime
+//     bool flag = true; //prime
 
 
-    for(int i =2 ; i <= n ;i++){
-        if(n%i == 0){
-            flag = false; //composite
-            break; // to get out of the loop
+//     for(int i =2 ; i <= n/2 ;i++){
+//         if(n%i == 0){
+//             flag = false; //composite
+//             break; // to get out of the loop
             
-        }
+//         }
         
-    }
-    if(n == 1){
-        cout<<"Neitehr prime nor composite";
-        
-
-    }
-    else if (flag == true){
-        cout<<"prime number";
-    }
-
-    else{
-        cout<<"Composite number";
+//     }
+//     if(n == 1){
+//         cout<<"Neither prime nor composite";
         
 
-    }
-}
+//     }
+//     else if (flag == true){
+//         cout<<"prime number";
+//     }
+
+//     else{
+//         cout<<"Composite number";
+        
+
+//     }
+// }
+
+//continue statement
+
+// int main(){
+//     for (int i =1; i<=20; i++){
+//         if(i != 3 && i!= 7){
+//             cout<<i<<endl;
+        
+//         }
+
+// }
+
+//another method
+
+// int main(){
+//     for (int i =1; i<=20; i++){
+//         if(i == 3 || i == 7)
+//             continue;
+//             cout<<i<<endl;
+
+//     }
+// }
+
+//print odd numbers using continue
+
+// int main(){
+    
+    
+//     for(int i =1; i<=100; i++){
+//         if(i%2 == 0)
+//             continue;
+//             cout<<i<<endl;
+        
+//     }
+// }
+
+// while loop
+
+// int main(){
+//     int i =1;
+//     while(i<=10){
+//         cout<<i<<endl;
+//         i++;
+
+//     }
+// }
+
+// int main(){
+//     int i =1;
+//     do{
+//         cout<<i<<endl;
+//         i++;
+
+//     }while(i<=10);
+// }
+
+int main()
