@@ -59,7 +59,87 @@ using namespace std;
 //print sum of even digits of a number
 
 
-int main(){
+// int main(){
+//     int n;
+//     cout<<"Enter a number: ";
+//     cin>>n;
+
+//     int r= 0;
     
 
-}
+//     while(n!=0){
+//         int ld =n%10;
+//         r*=10;
+//         r+=ld;
+//         n=n/10;
+
+//     }
+//     cout<<r;
+
+// }
+
+// int main(){
+//     int n;
+//     cout<<"Enter a number to be reversed: ";
+//     cin>>n;
+//     int org =n;
+
+//     int r=0;
+
+//     while(n!=0){
+//         int ld = n%10;
+//         r*=10;
+//         r+=ld;
+//         n=n/10;
+//         //cout<<"Sum of both: "<<r+n<<endl;
+
+//     }
+//     cout<<"reversed number: "<<r<<endl;
+
+//     cout<<"Sum of both: "<<r+org;
+
+// }
+
+// sum of 1 to n
+
+// int main(){
+
+//     int n;
+//     cout<<"enter a number: ";
+//     cin>>n;
+
+//     int sum =0;
+
+//     for(int i=1; i<=n;i++){
+//         sum+=i;
+
+//     }
+//     cout<<sum;
+// }
+
+//factorial 
+
+// int main(){
+
+//     int n;
+//     cout<<"enter a number: ";
+//     cin>>n;
+
+//     int prod =1;
+
+//     for(int i=1; i<=n;i++){
+//         prod*=i;
+
+//     }
+//     cout<<prod;
+// }
+
+// int main(){
+//     int n =66;
+     
+//     for (int i =66; i<=92; i++){
+//         cout<<"ASCII value with characters: "<<i<<" and "<<char(i)<<endl;
+//     }
+// } 
+
+
