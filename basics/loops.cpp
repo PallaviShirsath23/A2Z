@@ -178,7 +178,29 @@ int main(){
     cout<<"Enter  a number you want to find where composite or not: ";
     cin>>n;
 
-    for(i=1 ; i=n/2 ;i++){
+    bool flag = true; //prime
+
+
+    for(int i =2 ; i <= n ;i++){
+        if(n%i == 0){
+            flag = false; //composite
+            break; // to get out of the loop
+            
+        }
         
+    }
+    if(n == 1){
+        cout<<"Neitehr prime nor composite";
+        
+
+    }
+    else if (flag == true){
+        cout<<"prime number";
+    }
+
+    else{
+        cout<<"Composite number";
+        
+
     }
 }
