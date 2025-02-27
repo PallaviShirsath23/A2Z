@@ -118,17 +118,18 @@ using namespace std;
 //     }
 // }
 
-int main(){
-    int n;
-    cout<<"Enter a number: ";
-    cin>>n;
+// int main(){
+//     int n;
+//     cout<<"Enter a number: ";
+//     cin>>n;
 
-    for(int row =1; row<=n; row++){
-        for(int column=1; column<=row; column++){
-            cout<<;
-        }
-        cout<<endl;
+//     for(int i =1;i<=n;i++){
+//         for(int j =1;j<=i;j++){
+//             cout<<j<<" ";
+//         }
+//     cout<<endl;
+//     }
+// }
 
-    }
-}
+
 
