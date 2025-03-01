@@ -1,6 +1,5 @@
 #include<iostream>
-using namespace std;
-
+using namespace std
 // int main(){
 
 //     float pi = 3.14;
