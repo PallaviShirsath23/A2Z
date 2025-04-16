@@ -72,6 +72,43 @@ using namespace std;
 // }
 
 
+// int main(){
+//     int arr[] = {0,4,6,7,23,6,4,9,8,2,3};
+//     int size = sizeof(arr)/sizeof(arr[0]);
+//     cout<<"Size of the array is "<<size<<endl;
 
+//     int x;
+//     cout<<"Enter the number you want to search: ";
+//     cin>>x;
 
+//     bool flag = false;
+
+//     for(int i=0; i<size; i++){
+//         if (arr[i]==x){
+//             flag = true;
+            
+//             break;
+//     }
+    
+//     if(flag) cout<<x<<" is present in the array"; 
+//     else cout<<x<<" is not present in the array"; 
+// }
+// }
+
+int main(){
+    int arr[] ={23,24,12,40,5,6,56,17,13,16,25};
+
+    int mx =  arr[0];
+
+    int size = sizeof(arr)/sizeof(arr[0]);
+    cout<<"Size of the array is "<<size<<endl;
+
+    for(int i =1 ; i<size; i++){
+        if(mx= arr[i]) mx=arr[i];
+        // mx = max(mx,arr[i]);
+        //cout<<mx;
+
+    }
+    cout<<mx;
+}
  
