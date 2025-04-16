@@ -19,18 +19,59 @@ using namespace std;
 
 
 
-int main(){
-    int n;
-    cin>>n;
-    cout<<"Input the size of array: ";
+// int main(){
+//     int n;
+//     cin>>n;
+//     cout<<"Input the size of array: ";
 
-    int arr[n];
+//     int arr[n];
 
-    for(int i = 0; i<n; i++){
-        cin>>arr[i];
-    }
+//     for(int i = 0; i<n; i++){
+//         cin>>arr[i];
+//     }
 
-    for(int i = 0; i<n; i++){
-        cout<<arr[i];
-    }
-}
+//     for(int i = 0; i<n; i++){
+//         cout<<arr[i];
+//     }
+// }
+
+// int main(){
+//     int size;
+//     cin>>size;
+//     int arr[size];
+
+//     int sum = 0;
+
+//     for(int i =0; i<=size-1; i++){
+//         cin>>arr[i];
+//     }
+
+//     for(int i =0; i<size; i++){
+//         sum += arr[i];
+//         //cout<<sum;
+//     }
+//     cout<<sum;
+// }
+
+// int main(){
+//     int size;
+//     cin>>size;
+//     int arr[size];
+
+//     int prod =1;
+
+//     for(int i =0; i<=size-1; i++){
+//         cin>>arr[i];
+//     }
+
+//     for(int i =0; i<size; i++){
+//         prod*= arr[i];
+//         //cout<<sum;
+//     }
+//     cout<<prod;
+// }
+
+
+
+
+ 
