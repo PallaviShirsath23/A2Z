@@ -131,22 +131,28 @@ using namespace std;
 
 //second maximum
 
-int main(){
-    int arr[] ={23,24,12,40,5,6,56,17,13,16,25};
+// int main(){
+//     int arr[] ={23,24,12,40,5,6,56,17,13,16,25};
 
-    int minn =  arr[0];
+//     int mx = INT_MIN;
+//     int smx = INT_MIN;
 
-    int size = sizeof(arr)/sizeof(arr[0]);
-    cout<<"Size of the array is "<<size<<endl;
+//     int size = sizeof(arr)/sizeof(arr[0]);
+//     cout<<"Size of the array is "<<size<<endl;
 
-    for(int i =1 ; i<size; i++){
-        if(minn>arr[i]) minn=arr[i];
-        // break;
-        // mx = max(mx,arr[i]);
-        //cout<<mx;
-    }
-    cout<<minn;
-}
+//     for(int i =1 ; i<size; i++){
+//         if(mx<arr[i]) mx=arr[i];
+//         // break;
+//         // mx = max(mx,arr[i]);
+//         //cout<<mx;
+//     }
+//     for (int i =0 ; i<size; i++){
+//         if(smx<arr[i] && arr[i] != mx) smx = arr[i];
+//     }
+//     cout<<mx<<" "<<smx; 
+// }
+
+
 
 
  
