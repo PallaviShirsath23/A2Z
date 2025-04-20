@@ -95,20 +95,58 @@ using namespace std;
 // }
 // }
 
+// int main(){
+//     int arr[] ={23,24,12,40,5,6,56,17,13,16,25};
+
+//     int mx =  arr[0];
+
+//     int size = sizeof(arr)/sizeof(arr[0]);
+//     cout<<"Size of the array is "<<size<<endl;
+
+//     for(int i =1 ; i<size; i++){
+//         if(mx<arr[i]) mx=arr[i];
+//         // break;
+//         // mx = max(mx,arr[i]);
+//         //cout<<mx;
+//     }
+//     cout<<mx;
+// }
+
+// int main(){
+//     int arr[] ={23,24,12,40,5,6,56,17,13,16,25};
+
+//     int minn =  arr[0];
+
+//     int size = sizeof(arr)/sizeof(arr[0]);
+//     cout<<"Size of the array is "<<size<<endl;
+
+//     for(int i =1 ; i<size; i++){
+//         if(minn>arr[i]) minn=arr[i];
+//         // break;
+//         // mx = max(mx,arr[i]);
+//         //cout<<mx;
+//     }
+//     cout<<minn;
+// }
+
+//second maximum
+
 int main(){
     int arr[] ={23,24,12,40,5,6,56,17,13,16,25};
 
-    int mx =  arr[0];
+    int minn =  arr[0];
 
     int size = sizeof(arr)/sizeof(arr[0]);
     cout<<"Size of the array is "<<size<<endl;
 
     for(int i =1 ; i<size; i++){
-        if(mx= arr[i]) mx=arr[i];
+        if(minn>arr[i]) minn=arr[i];
+        // break;
         // mx = max(mx,arr[i]);
         //cout<<mx;
-
     }
-    cout<<mx;
+    cout<<minn;
 }
+
+
  
