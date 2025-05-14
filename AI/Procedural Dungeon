@@ -1,0 +1,521 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+#include <random>
+#include <algorithm>
+#include <limits>
+#include <ctime>
+#include <unordered_map>
+
+using namespace std;
+
+// Chess piece representation
+enum Piece { EMPTY, W_KING, W_QUEEN, B_KING };
+
+// Structure to represent a position on the chess board
+struct Position {
+    int row, col;
+    
+    Position(int r = 0, int c = 0) : row(r), col(c) {}
+    
+    bool operator==(const Position& other) const {
+        return row == other.row && col == other.col;
+    }
+    
+    bool operator!=(const Position& other) const {
+        return !(*this == other);
+    }
+};
+
+// Structure for moves
+struct Move {
+    Position from;
+    Position to;
+    
+    Move(Position f, Position t) : from(f), to(t) {}
+    
+    string toString() const {
+        char col_from = 'a' + from.col;
+        char col_to = 'a' + to.col;
+        string result = "";
+        result += col_from;
+        result += '8' - from.row;
+        result += " to ";
+        result += col_to;
+        result += '8' - to.row;
+        return result;
+    }
+};
+
+// Chess board state
+class ChessBoard {
+private:
+    vector<vector<Piece>> board;
+    bool whiteToMove;
+    Position whiteKingPos;
+    Position whiteQueenPos;
+    Position blackKingPos;
+    
+    // Zobrist hashing
+    uint64_t zobristTable[8][8][4]; // [row][col][piece]
+    unordered_map<uint64_t, int> transpositionTable;
+    
+public:
+    // Initialize the chess board with a specific endgame position
+    ChessBoard() : board(8, vector<Piece>(8, EMPTY)), whiteToMove(true) {
+        // Initialize Zobrist table with random values
+        initZobristTable();
+        
+        // Setup the initial position: King and Queen vs King
+        board[7][4] = W_KING;   // White King at e1
+        board[7][3] = W_QUEEN;  // White Queen at d1
+        board[0][4] = B_KING;   // Black King at e8
+        
+        whiteKingPos = Position(7, 4);
+        whiteQueenPos = Position(7, 3);
+        blackKingPos = Position(0, 4);
+    }
+    
+    // Initialize Zobrist hashing table
+    void initZobristTable() {
+        random_device rd;
+        mt19937_64 gen(rd());
+        uniform_int_distribution<uint64_t> dist;
+        
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                for (int p = 0; p < 4; p++) {
+                    zobristTable[r][c][p] = dist(gen);
+                }
+            }
+        }
+    }
+    
+    // Calculate Zobrist hash for current board state
+    uint64_t calculateZobristHash() const {
+        uint64_t hash = 0;
+        
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+                if (board[r][c] != EMPTY) {
+                    hash ^= zobristTable[r][c][board[r][c]];
+                }
+            }
+        }
+        
+        // Include turn information in the hash
+        if (whiteToMove) {
+            hash ^= zobristTable[0][0][0]; // Use a special hash value for turn
+        }
+        
+        return hash;
+    }
+    
+    // Display the chess board
+    void display() const {
+        cout << "  a b c d e f g h" << endl;
+        for (int r = 0; r < 8; r++) {
+            cout << 8 - r << " ";
+            for (int c = 0; c < 8; c++) {
+                char piece = '.';
+                switch (board[r][c]) {
+                    case W_KING: piece = 'K'; break;
+                    case W_QUEEN: piece = 'Q'; break;
+                    case B_KING: piece = 'k'; break;
+                    default: piece = '.';
+                }
+                cout << piece << " ";
+            }
+            cout << 8 - r << endl;
+        }
+        cout << "  a b c d e f g h" << endl;
+        cout << (whiteToMove ? "White" : "Black") << " to move" << endl;
+    }
+    
+    // Check if the position is valid (kings not adjacent, etc.)
+    bool isValidPosition() const {
+        // Kings cannot be adjacent
+        int rowDiff = abs(whiteKingPos.row - blackKingPos.row);
+        int colDiff = abs(whiteKingPos.col - blackKingPos.col);
+        
+        if (rowDiff <= 1 && colDiff <= 1) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    // Check if the given position is attacked by white pieces
+    bool isAttackedByWhite(const Position& pos) const {
+        // Check if the white king attacks the position
+        int rowDiff = abs(whiteKingPos.row - pos.row);
+        int colDiff = abs(whiteKingPos.col - pos.col);
+        if (rowDiff <= 1 && colDiff <= 1) {
+            return true;
+        }
+        
+        // Check if the white queen attacks the position
+        if (whiteQueenPos.row == pos.row || whiteQueenPos.col == pos.col) {
+            // Horizontal or vertical attack
+            if (whiteQueenPos.row == pos.row) {
+                int start = min(whiteQueenPos.col, pos.col) + 1;
+                int end = max(whiteQueenPos.col, pos.col);
+                bool clear = true;
+                for (int c = start; c < end; c++) {
+                    if (board[pos.row][c] != EMPTY) {
+                        clear = false;
+                        break;
+                    }
+                }
+                if (clear) return true;
+            }
+            if (whiteQueenPos.col == pos.col) {
+                int start = min(whiteQueenPos.row, pos.row) + 1;
+                int end = max(whiteQueenPos.row, pos.row);
+                bool clear = true;
+                for (int r = start; r < end; r++) {
+                    if (board[r][pos.col] != EMPTY) {
+                        clear = false;
+                        break;
+                    }
+                }
+                if (clear) return true;
+            }
+        } else if (abs(whiteQueenPos.row - pos.row) == abs(whiteQueenPos.col - pos.col)) {
+            // Diagonal attack
+            int rowDir = (pos.row > whiteQueenPos.row) ? 1 : -1;
+            int colDir = (pos.col > whiteQueenPos.col) ? 1 : -1;
+            int r = whiteQueenPos.row + rowDir;
+            int c = whiteQueenPos.col + colDir;
+            
+            while (r != pos.row && c != pos.col) {
+                if (board[r][c] != EMPTY) return false;
+                r += rowDir;
+                c += colDir;
+            }
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // Check if the current position is checkmate for black
+    bool isCheckmate() const {
+        // First, check if black king is in check
+        if (!isAttackedByWhite(blackKingPos)) return false;
+        
+        // Check if black king can move out of check
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                if (dr == 0 && dc == 0) continue;
+                
+                int newRow = blackKingPos.row + dr;
+                int newCol = blackKingPos.col + dc;
+                
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 && 
+                    board[newRow][newCol] == EMPTY) {
+                    Position newPos(newRow, newCol);
+                    if (!isAttackedByWhite(newPos)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    // Check if the current position is stalemate
+    bool isStalemate() const {
+        if (isAttackedByWhite(blackKingPos)) return false;
+        
+        // Check if black king can move
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                if (dr == 0 && dc == 0) continue;
+                
+                int newRow = blackKingPos.row + dr;
+                int newCol = blackKingPos.col + dc;
+                
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8 && 
+                    board[newRow][newCol] == EMPTY) {
+                    Position newPos(newRow, newCol);
+                    if (!isAttackedByWhite(newPos)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    // Generate valid moves for the current player
+    vector<Move> generateMoves() const {
+        vector<Move> moves;
+        
+        if (whiteToMove) {
+            // White king moves
+            for (int dr = -1; dr <= 1; dr++) {
+                for (int dc = -1; dc <= 1; dc++) {
+                    if (dr == 0 && dc == 0) continue;
+                    
+                    int newRow = whiteKingPos.row + dr;
+                    int newCol = whiteKingPos.col + dc;
+                    
+                    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] != W_QUEEN) {
+                            moves.push_back(Move(whiteKingPos, Position(newRow, newCol)));
+                        }
+                    }
+                }
+            }
+            
+            // White queen moves
+            // Horizontal
+            for (int c = 0; c < 8; c++) {
+                if (c != whiteQueenPos.col) {
+                    moves.push_back(Move(whiteQueenPos, Position(whiteQueenPos.row, c)));
+                }
+            }
+            
+            // Vertical
+            for (int r = 0; r < 8; r++) {
+                if (r != whiteQueenPos.row) {
+                    moves.push_back(Move(whiteQueenPos, Position(r, whiteQueenPos.col)));
+                }
+            }
+            
+            // Diagonals
+            for (int d = 1; d < 8; d++) {
+                // Top-right
+                int r = whiteQueenPos.row - d;
+                int c = whiteQueenPos.col + d;
+                if (r >= 0 && c < 8) {
+                    moves.push_back(Move(whiteQueenPos, Position(r, c)));
+                }
+                
+                // Top-left
+                r = whiteQueenPos.row - d;
+                c = whiteQueenPos.col - d;
+                if (r >= 0 && c >= 0) {
+                    moves.push_back(Move(whiteQueenPos, Position(r, c)));
+                }
+                
+                // Bottom-right
+                r = whiteQueenPos.row + d;
+                c = whiteQueenPos.col + d;
+                if (r < 8 && c < 8) {
+                    moves.push_back(Move(whiteQueenPos, Position(r, c)));
+                }
+                
+                // Bottom-left
+                r = whiteQueenPos.row + d;
+                c = whiteQueenPos.col - d;
+                if (r < 8 && c >= 0) {
+                    moves.push_back(Move(whiteQueenPos, Position(r, c)));
+                }
+            }
+        } else {
+            // Black king moves
+            for (int dr = -1; dr <= 1; dr++) {
+                for (int dc = -1; dc <= 1; dc++) {
+                    if (dr == 0 && dc == 0) continue;
+                    
+                    int newRow = blackKingPos.row + dr;
+                    int newCol = blackKingPos.col + dc;
+                    
+                    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] == EMPTY) {
+                            Position newPos(newRow, newCol);
+                            if (!isAttackedByWhite(newPos)) {
+                                moves.push_back(Move(blackKingPos, newPos));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Filter invalid moves
+        vector<Move> validMoves;
+        for (const auto& move : moves) {
+            ChessBoard nextBoard = *this;
+            nextBoard.makeMove(move);
+            if (nextBoard.isValidPosition()) {
+                validMoves.push_back(move);
+            }
+        }
+        
+        return validMoves;
+    }
+    
+    // Make a move on the board
+    void makeMove(const Move& move) {
+        Piece piece = board[move.from.row][move.from.col];
+        
+        // Clear the source square
+        board[move.from.row][move.from.col] = EMPTY;
+        
+        // Handle captures
+        if (board[move.to.row][move.to.col] != EMPTY) {
+            // Piece is captured
+        }
+        
+        // Place the piece on the destination square
+        board[move.to.row][move.to.col] = piece;
+        
+        // Update piece positions
+        if (piece == W_KING) {
+            whiteKingPos = move.to;
+        } else if (piece == W_QUEEN) {
+            whiteQueenPos = move.to;
+        } else if (piece == B_KING) {
+            blackKingPos = move.to;
+        }
+        
+        // Switch turns
+        whiteToMove = !whiteToMove;
+    }
+    
+    // Evaluate the current board state from white's perspective
+    int evaluate() const {
+        if (isCheckmate()) return 10000; // White wins
+        if (isStalemate()) return 0;     // Draw
+        
+        // Distance between black king and corner (prefer to drive king to corner)
+        int cornerDistance = min(blackKingPos.row, 7 - blackKingPos.row) + 
+                            min(blackKingPos.col, 7 - blackKingPos.col);
+        
+        // Distance between kings (white king should get closer to black king)
+        int kingDistance = abs(whiteKingPos.row - blackKingPos.row) + 
+                           abs(whiteKingPos.col - blackKingPos.col);
+        
+        return 100 - cornerDistance * 10 - kingDistance * 5;
+    }
+    
+    // Minimax algorithm with alpha-beta pruning
+    int minimax(int depth, int alpha, int beta, bool maximizingPlayer) {
+        // Check transposition table
+        uint64_t hashKey = calculateZobristHash();
+        if (transpositionTable.find(hashKey) != transpositionTable.end()) {
+            return transpositionTable[hashKey];
+        }
+        
+        if (depth == 0 || isCheckmate() || isStalemate()) {
+            int score = evaluate();
+            transpositionTable[hashKey] = score;
+            return score;
+        }
+        
+        vector<Move> moves = generateMoves();
+        
+        if (maximizingPlayer) {
+            int maxEval = numeric_limits<int>::min();
+            for (const Move& move : moves) {
+                ChessBoard nextBoard = *this;
+                nextBoard.makeMove(move);
+                int eval = nextBoard.minimax(depth - 1, alpha, beta, false);
+                maxEval = max(maxEval, eval);
+                alpha = max(alpha, eval);
+                if (beta <= alpha) break;
+            }
+            transpositionTable[hashKey] = maxEval;
+            return maxEval;
+        } else {
+            int minEval = numeric_limits<int>::max();
+            for (const Move& move : moves) {
+                ChessBoard nextBoard = *this;
+                nextBoard.makeMove(move);
+                int eval = nextBoard.minimax(depth - 1, alpha, beta, true);
+                minEval = min(minEval, eval);
+                beta = min(beta, eval);
+                if (beta <= alpha) break;
+            }
+            transpositionTable[hashKey] = minEval;
+            return minEval;
+        }
+    }
+    
+    // Find the best move using minimax
+    Move findBestMove(int depth) {
+        vector<Move> moves = generateMoves();
+        if (moves.empty()) return Move(Position(-1, -1), Position(-1, -1));
+        
+        int bestValue = whiteToMove ? numeric_limits<int>::min() : numeric_limits<int>::max();
+        Move bestMove = moves[0];
+        
+        for (const Move& move : moves) {
+            ChessBoard nextBoard = *this;
+            nextBoard.makeMove(move);
+            int value = nextBoard.minimax(depth - 1, 
+                                         numeric_limits<int>::min(), 
+                                         numeric_limits<int>::max(), 
+                                         !whiteToMove);
+            
+            if ((whiteToMove && value > bestValue) || (!whiteToMove && value < bestValue)) {
+                bestValue = value;
+                bestMove = move;
+            }
+        }
+        
+        return bestMove;
+    }
+    
+    // Check if the game is over
+    bool isGameOver() const {
+        return isCheckmate() || isStalemate() || generateMoves().empty();
+    }
+    
+    // Get current player
+    bool isWhiteToMove() const {
+        return whiteToMove;
+    }
+};
+
+int main() {
+    ChessBoard board;
+    int moveCount = 0;
+    
+    cout << "Chess Endgame Solver - King and Queen vs King" << endl;
+    cout << "---------------------------------------------" << endl;
+    cout << "Initial position:" << endl;
+    board.display();
+    
+    while (!board.isGameOver() && moveCount < 50) {
+        cout << "\nMove " << moveCount + 1 << ":" << endl;
+        
+        Move bestMove = board.findBestMove(4);
+        if (bestMove.from.row == -1) {
+            cout << "No valid moves available." << endl;
+            break;
+        }
+        
+        string player = board.isWhiteToMove() ? "White" : "Black";
+        cout << player << " moves: " << bestMove.toString() << endl;
+        
+        board.makeMove(bestMove);
+        board.display();
+        
+        moveCount++;
+        
+        if (board.isCheckmate()) {
+            cout << "\nCheckmate! White wins." << endl;
+            break;
+        }
+        
+        if (board.isStalemate()) {
+            cout << "\nStalemate! Game is a draw." << endl;
+            break;
+        }
+    }
+    
+    if (moveCount >= 50) {
+        cout << "\nGame ended due to move limit. No conclusion." << endl;
+    }
+    
+    return 0;
+}
+```
+</copilot-edited-file>  
