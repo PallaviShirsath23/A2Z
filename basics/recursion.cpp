@@ -67,8 +67,9 @@ using namespace std;
 
 void count(int i, int n){
     if(i<1) return;
-    count(i-1,n);
     cout<<i<<" ";
+    count(i-1,n);
+    
 
 }
 
